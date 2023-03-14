@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: Application de réservation de salles
+  description: API pour la réservation de salles au sein d'une entreprise
+  version: 1.0.0
+servers:
+  - url: https://api.example.com/v1
+
+paths:
+  /rooms:
+    get:
+      summary: Liste des salles disponibles
+      description: Renvoie une liste des salles disponibles pour la réservation
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: Identifiant de la salle
+                    name:
+                      type: string
+                      description: Nom de la salle
+                    capacity:
+                      type: integer
+                      description: Capacité de la salle
+      security:
+        - firebase: []
+    post:
+      summary: Créer une nouvelle salle
+      description: Crée une nouvelle salle pour la réservation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nom de la salle
+                capacity:
+                  type: integer
+                  description: Capacité de la salle
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifiant de la nouvelle salle
+                  name:
+                    type: string
+                    description: Nom de la nouvelle salle
+                  capacity:
+                    type: integer
+                    description: Capacité de la nouvelle salle
+      security:
+        - firebase: []
+
+  /bookings:
+    get:
+      summary: Liste des réservations
+      description: Renvoie une liste des réservations de salles
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: Identifiant de la réservation
+                    roomId:
+                      type: integer
+                      description: Identifiant de la salle réservée
+                    start:
+                      type: string
+                      format: date-time
+                      description: Date et heure de début de la réservation
+                    end:
+                      type: string
+                      format: date-time
+                      description: Date et heure de fin de la réservation
+                    userId:
+                      type: string
+                      description: Identifiant de l'utilisateur qui a effectué la réservation
+      security:
+        - firebase: []
+    post:
+      summary: Créer une nouvelle réservation
+      description: Crée une nouvelle réservation pour une salle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roomId:
+                  type: integer
+                  description: Identifiant de la salle réservée
+                start:
+                  type: string
+                  format: date-time
+                  description: Date et heure de début de la réservation
+                end:
+                  type: string
+                  format: date-time
+                  description: Date et heure de fin de la réservation
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifiant de la nouvelle réservation
+                  roomId:
+                    type: integer
+                    description: Identifiant de la salle réservée
+                  start:
+                    type: string
+                    format: date-time
+                    description: Date et heure de début de la réservation
+                  end:
+                    type: string
+                    format: date-time
+                    description: Date et heure de fin de la réservation
+                  userId:
+                    type: string
+                    description: Identifiant de l'utilisateur qui a effectué la réservation
+      security:
+        - firebase: []
+
+components:
+  securitySchemes:
+    firebase:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.google.com/o/oauth2/auth
+          tokenUrl: https://oauth2.googleapis.com/token
+          scopes:
+            https://www.googleapis.com/auth/userinfo.email: Accès à l'adresse e-mail de l'utilisateur
