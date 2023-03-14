@@ -29,17 +29,8 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                      description: Identifiant de l'utilisateur
-                    name:
-                      type: string
-                      description: Nom de l'utilisateur
-                    email:
-                      type: string
-                      description: Adresse e-mail de l'utilisateur
+                  $ref: '#/components/schemas/User'
+
       security:
         - firebase: []
     post:
@@ -52,34 +43,16 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: Nom de l'utilisateur
-                email:
-                  type: string
-                  description: Adresse e-mail de l'utilisateur
-                password:
-                  type: string
-                  description: Mot de passe de l'utilisateur
+              $ref: '#/components/schemas/User'
+
       responses:
         "201":
           description: Created
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    description: Identifiant de l'utilisateur créé
-                  name:
-                    type: string
-                    description: Nom de l'utilisateur créé
-                  email:
-                    type: string
-                    description: Adresse e-mail de l'utilisateur créé
+                $ref: '#/components/schemas/User'
+
       security:
         - firebase: []
   /users/{id}:
@@ -101,17 +74,8 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    description: Identifiant de l'utilisateur
-                  name:
-                    type: string
-                    description: Nom de l'utilisateur
-                  email:
-                    type: string
-                    description: Adresse e-mail de l'utilisateur
+                $ref: '#/components/schemas/User'
+
         "404":
           description: Utilisateur non trouvé
       security:
@@ -134,31 +98,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: Nouveau nom de l'utilisateur
-                email:
-                  type: string
-                  description: Nouvelle adresse e-mail de l'utilisateur
+              $ref: '#/components/schemas/User'
       responses:
         "200":
           description: OK
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    description: Identifiant de l'utilisateur
-                  name:
-                    type: string
-                    description: Nom de l'utilisateur mis à jour
-                  email:
-                    type: string
-                    description: Adresse e-mail de l'utilisateur mise à jour
+             schema:
+                $ref: '#/components/schemas/User'
         "404":
           description: Utilisateur non trouvé
       security:
