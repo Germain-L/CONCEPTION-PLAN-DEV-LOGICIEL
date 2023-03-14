@@ -567,3 +567,62 @@ components:
           tokenUrl: https://oauth2.googleapis.com/token
           scopes:
             https://www.googleapis.com/auth/userinfo.email: Accès à l'adresse e-mail de l'utilisateur
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the user
+        name:
+          type: string
+          description: Name of the user
+        email:
+          type: string
+          format: email
+          description: Email address of the user
+      required:
+        - name
+        - email
+
+    Room:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the room
+        name:
+          type: string
+          description: Name of the room
+        capacity:
+          type: integer
+          description: Maximum number of people that can occupy the room
+      required:
+        - name
+        - capacity
+
+    Booking:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the booking
+        roomId:
+          type: integer
+          description: Unique identifier for the room that has been booked
+        start:
+          type: string
+          format: date-time
+          description: Date and time the booking starts
+        end:
+          type: string
+          format: date-time
+          description: Date and time the booking ends
+        userId:
+          type: integer
+          description: Unique identifier for the user who made the booking
+      required:
+        - roomId
+        - start
+        - end
+        - userId
