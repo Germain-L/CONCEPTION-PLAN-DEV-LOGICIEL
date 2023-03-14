@@ -8,17 +8,85 @@ servers:
 
 paths:
   /users:
-  get:
-    summary: Liste des utilisateurs
-    description: Renvoie une liste des utilisateurs
-    responses:
-      "200":
-        description: OK
+    get:
+      summary: Liste des utilisateurs
+      description: Renvoie une liste des utilisateurs
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: Identifiant de l'utilisateur
+                    name:
+                      type: string
+                      description: Nom de l'utilisateur
+                    email:
+                      type: string
+                      description: Adresse e-mail de l'utilisateur
+      security:
+        - firebase: []
+    post:
+      summary: Créer un nouvel utilisateur
+      description: Crée un nouvel utilisateur
+      requestBody:
+        required: true
         content:
           application/json:
             schema:
-              type: array
-              items:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nom de l'utilisateur
+                email:
+                  type: string
+                  description: Adresse e-mail de l'utilisateur
+                password:
+                  type: string
+                  description: Mot de passe de l'utilisateur
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifiant de l'utilisateur créé
+                  name:
+                    type: string
+                    description: Nom de l'utilisateur créé
+                  email:
+                    type: string
+                    description: Adresse e-mail de l'utilisateur créé
+      security:
+        - firebase: []
+  /users/{id}:
+    get:
+      summary: Récupérer un utilisateur par ID
+      description: Récupère un utilisateur à partir de son identifiant
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Identifiant de l'utilisateur à récupérer
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
                 type: object
                 properties:
                   id:
@@ -30,8 +98,8 @@ paths:
                   email:
                     type: string
                     description: Adresse e-mail de l'utilisateur
-    security:
-      - firebase: []
+      security:
+        - firebase: []
 
   /rooms:
     get:
