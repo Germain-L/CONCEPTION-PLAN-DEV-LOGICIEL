@@ -7,6 +7,32 @@ servers:
   - url: https://api.example.com/v1
 
 paths:
+  /users:
+  get:
+    summary: Liste des utilisateurs
+    description: Renvoie une liste des utilisateurs
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifiant de l'utilisateur
+                  name:
+                    type: string
+                    description: Nom de l'utilisateur
+                  email:
+                    type: string
+                    description: Adresse e-mail de l'utilisateur
+    security:
+      - firebase: []
+
   /rooms:
     get:
       summary: Liste des salles disponibles
@@ -97,7 +123,7 @@ paths:
                       format: date-time
                       description: Date et heure de fin de la réservation
                     userId:
-                      type: string
+                      type: integer
                       description: Identifiant de l'utilisateur qui a effectué la réservation
       security:
         - firebase: []
@@ -145,7 +171,7 @@ paths:
                     format: date-time
                     description: Date et heure de fin de la réservation
                   userId:
-                    type: string
+                    type: integer
                     description: Identifiant de l'utilisateur qui a effectué la réservation
       security:
         - firebase: []
