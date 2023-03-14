@@ -6,9 +6,19 @@ info:
 servers:
   - url: https://api.example.com/v1
 
+tags:
+- name: Users
+  description: Tout sur les utilisateurs
+- name: Rooms
+  description: Tout sur les salles
+- name: Bookings
+  description: Tout sur les réservations
+
 paths:
   /users:
     get:
+      tags:
+        - Users
       summary: Liste des utilisateurs
       description: Renvoie une liste des utilisateurs
       responses:
@@ -33,6 +43,8 @@ paths:
       security:
         - firebase: []
     post:
+      tags:
+        - Users
       summary: Créer un nouvel utilisateur
       description: Crée un nouvel utilisateur
       requestBody:
@@ -72,6 +84,8 @@ paths:
         - firebase: []
   /users/{id}:
     get:
+      tags:
+        - Users
       summary: Récupérer un utilisateur par ID
       description: Récupère un utilisateur à partir de son identifiant
       parameters:
@@ -104,6 +118,8 @@ paths:
         - firebase: []
 
     put:
+      tags:
+        - Users
       summary: Mettre à jour un utilisateur
       description: Met à jour les informations d'un utilisateur
       parameters:
@@ -149,6 +165,8 @@ paths:
         - firebase: []
 
     delete:
+      tags:
+        - Users
       summary: Supprimer un utilisateur
       description: Supprime un utilisateur existant
       parameters:
@@ -168,6 +186,8 @@ paths:
 
   /rooms:
     get:
+      tags:
+        - Rooms
       summary: Liste des salles disponibles
       description: Renvoie une liste des salles disponibles pour la réservation
       responses:
@@ -192,6 +212,8 @@ paths:
       security:
         - firebase: []
     post:
+      tags:
+        - Rooms
       summary: Créer une nouvelle salle
       description: Crée une nouvelle salle pour la réservation
       requestBody:
@@ -229,6 +251,8 @@ paths:
 
   /rooms/{id}:
     get:
+      tags:
+        - Rooms
       summary: Récupérer les informations d'une salle
       description: Récupère les informations d'une salle spécifique en fonction de son identifiant.
       parameters:
@@ -260,6 +284,8 @@ paths:
       security:
         - firebase: []
     put:
+      tags:
+        - Rooms
       summary: Mettre à jour les informations d'une salle
       description: Met à jour les informations d'une salle spécifique en fonction de son identifiant.
       parameters:
@@ -304,6 +330,8 @@ paths:
       security:
         - firebase: []
     delete:
+      tags:
+        - Rooms
       summary: Supprimer une salle
       description: Supprime une salle spécifique en fonction de son identifiant.
       parameters:
@@ -323,6 +351,8 @@ paths:
 
   /bookings:
     get:
+      tags:
+        - Bookings
       summary: Liste des réservations
       description: Renvoie une liste des réservations de salles
       responses:
@@ -355,6 +385,8 @@ paths:
       security:
         - firebase: []
     post:
+      tags:
+        - Bookings
       summary: Créer une nouvelle réservation
       description: Crée une nouvelle réservation pour une salle
       requestBody:
@@ -404,6 +436,8 @@ paths:
         - firebase: []
   /bookings/{id}:
     get:
+      tags:
+        - Bookings
       summary: Obtenez une réservation spécifique
       description: Récupère les détails d'une réservation spécifique
       parameters:
@@ -444,6 +478,8 @@ paths:
         - firebase: []
 
     put:
+      tags:
+        - Bookings
       summary: Modifier une réservation existante
       description: Modifie une réservation existante pour une salle
       parameters:
@@ -502,6 +538,8 @@ paths:
         - firebase: []
 
     delete:
+      tags:
+        - Bookings
       summary: Supprimer une réservation existante
       description: Supprime une réservation existante pour une salle
       parameters:
