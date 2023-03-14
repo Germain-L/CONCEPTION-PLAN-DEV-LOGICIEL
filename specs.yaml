@@ -573,14 +573,14 @@ components:
       properties:
         id:
           type: integer
-          description: Unique identifier for the user
+          description: Identifiant unique de l'utilisateur
         name:
           type: string
-          description: Name of the user
+          description: Nom de l'utilisateur
         email:
           type: string
           format: email
-          description: Email address of the user
+          description: Adresse e-mail de l'utilisateur
       required:
         - name
         - email
@@ -590,13 +590,13 @@ components:
       properties:
         id:
           type: integer
-          description: Unique identifier for the room
+          description: Identifiant unique de la salle
         name:
           type: string
-          description: Name of the room
+          description: Nom de la salle
         capacity:
           type: integer
-          description: Maximum number of people that can occupy the room
+          description: Nombre maximum de personnes pouvant occuper la salle
       required:
         - name
         - capacity
@@ -606,21 +606,21 @@ components:
       properties:
         id:
           type: integer
-          description: Unique identifier for the booking
+          description: Identifiant unique de la réservation
         roomId:
           type: integer
-          description: Unique identifier for the room that has been booked
+          description: Identifiant unique de la salle réservée
         start:
           type: string
           format: date-time
-          description: Date and time the booking starts
+          description: Date et heure de début de la réservation
         end:
           type: string
           format: date-time
-          description: Date and time the booking ends
+          description: Date et heure de fin de la réservation
         userId:
           type: integer
-          description: Unique identifier for the user who made the booking
+          description: Identifiant unique de l'utilisateur qui a effectué la réservation
       required:
         - roomId
         - start
