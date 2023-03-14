@@ -101,6 +101,69 @@ paths:
       security:
         - firebase: []
 
+    put:
+      summary: Mettre à jour un utilisateur
+      description: Met à jour les informations d'un utilisateur
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Identifiant de l'utilisateur à mettre à jour
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nouveau nom de l'utilisateur
+                email:
+                  type: string
+                  description: Nouvelle adresse e-mail de l'utilisateur
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifiant de l'utilisateur
+                  name:
+                    type: string
+                    description: Nom de l'utilisateur mis à jour
+                  email:
+                    type: string
+                    description: Adresse e-mail de l'utilisateur mise à jour
+        "404":
+          description: Utilisateur non trouvé
+      security:
+        - firebase: []
+
+    delete:
+      summary: Supprimer un utilisateur
+      description: Supprime un utilisateur existant
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Identifiant de l'utilisateur à supprimer
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Utilisateur non trouvé
+      security:
+        - firebase: []
+
   /rooms:
     get:
       summary: Liste des salles disponibles
@@ -159,6 +222,94 @@ paths:
                   capacity:
                     type: integer
                     description: Capacité de la nouvelle salle
+      security:
+        - firebase: []
+
+  /rooms/{id}:
+    get:
+      summary: Récupérer les informations d'une salle
+      description: Récupère les informations d'une salle spécifique en fonction de son identifiant.
+      parameters:
+        - in: path
+          name: id
+          description: Identifiant de la salle
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifiant de la salle
+                  name:
+                    type: string
+                    description: Nom de la salle
+                  capacity:
+                    type: integer
+                    description: Capacité de la salle
+      security:
+        - firebase: []
+    put:
+      summary: Mettre à jour les informations d'une salle
+      description: Met à jour les informations d'une salle spécifique en fonction de son identifiant.
+      parameters:
+        - in: path
+          name: id
+          description: Identifiant de la salle
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nom de la salle
+                capacity:
+                  type: integer
+                  description: Capacité de la salle
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifiant de la salle mise à jour
+                  name:
+                    type: string
+                    description: Nom de la salle mise à jour
+                  capacity:
+                    type: integer
+                    description: Capacité de la salle mise à jour
+      security:
+        - firebase: []
+    delete:
+      summary: Supprimer une salle
+      description: Supprime une salle spécifique en fonction de son identifiant.
+      parameters:
+        - in: path
+          name: id
+          description: Identifiant de la salle
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: No content
       security:
         - firebase: []
 
@@ -241,6 +392,122 @@ paths:
                   userId:
                     type: integer
                     description: Identifiant de l'utilisateur qui a effectué la réservation
+      security:
+        - firebase: []
+  /bookings/{id}:
+    get:
+      summary: Obtenez une réservation spécifique
+      description: Récupère les détails d'une réservation spécifique
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Identifiant de la réservation à récupérer
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifiant de la réservation
+                  roomId:
+                    type: integer
+                    description: Identifiant de la salle réservée
+                  start:
+                    type: string
+                    format: date-time
+                    description: Date et heure de début de la réservation
+                  end:
+                    type: string
+                    format: date-time
+                    description: Date et heure de fin de la réservation
+                  userId:
+                    type: integer
+                    description: Identifiant de l'utilisateur qui a effectué la réservation
+        "404":
+          description: Réservation non trouvée
+      security:
+        - firebase: []
+
+    put:
+      summary: Modifier une réservation existante
+      description: Modifie une réservation existante pour une salle
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Identifiant de la réservation à modifier
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roomId:
+                  type: integer
+                  description: Identifiant de la salle réservée
+                start:
+                  type: string
+                  format: date-time
+                  description: Date et heure de début de la réservation
+                end:
+                  type: string
+                  format: date-time
+                  description: Date et heure de fin de la réservation
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifiant de la réservation modifiée
+                  roomId:
+                    type: integer
+                    description: Identifiant de la salle réservée
+                  start:
+                    type: string
+                    format: date-time
+                    description: Date et heure de début de la réservation
+                  end:
+                    type: string
+                    format: date-time
+                    description: Date et heure de fin de la réservation
+                  userId:
+                    type: integer
+                    description: Identifiant de l'utilisateur qui a effectué la réservation
+        "404":
+          description: Réservation non trouvée
+      security:
+        - firebase: []
+
+    delete:
+      summary: Supprimer une réservation existante
+      description: Supprime une réservation existante pour une salle
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Identifiant de la réservation à supprimer
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Réservation non trouvée
       security:
         - firebase: []
 
