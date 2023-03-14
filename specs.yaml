@@ -98,6 +98,8 @@ paths:
                   email:
                     type: string
                     description: Adresse e-mail de l'utilisateur
+        "404":
+          description: Utilisateur non trouvé
       security:
         - firebase: []
 
@@ -253,6 +255,8 @@ paths:
                   capacity:
                     type: integer
                     description: Capacité de la salle
+        "404":
+          description: Salle non trouvé
       security:
         - firebase: []
     put:
@@ -295,6 +299,8 @@ paths:
                   capacity:
                     type: integer
                     description: Capacité de la salle mise à jour
+        "404":
+          description: Salle non trouvé
       security:
         - firebase: []
     delete:
@@ -310,6 +316,8 @@ paths:
       responses:
         "204":
           description: No content
+        "404":
+            description: Salle non trouvé
       security:
         - firebase: []
 
