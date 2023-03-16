@@ -9,12 +9,12 @@ servers:
   - url: https://api.example.com/v1
 
 tags:
-- name: Users
-  description: Tout sur les utilisateurs
-- name: Rooms
-  description: Tout sur les salles
-- name: Bookings
-  description: Tout sur les réservations
+  - name: Users
+    description: Tout sur les utilisateurs
+  - name: Rooms
+    description: Tout sur les salles
+  - name: Bookings
+    description: Tout sur les réservations
 
 paths:
   /users:
@@ -31,7 +31,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
+                  $ref: "#/components/schemas/User"
 
       security:
         - firebase: []
@@ -45,7 +45,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
 
       responses:
         "201":
@@ -53,7 +53,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
 
       security:
         - firebase: []
@@ -76,7 +76,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
 
         "404":
           description: Utilisateur non trouvé
@@ -100,14 +100,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
       responses:
         "200":
           description: OK
           content:
             application/json:
-             schema:
-                $ref: '#/components/schemas/User'
+              schema:
+                $ref: "#/components/schemas/User"
         "404":
           description: Utilisateur non trouvé
       security:
@@ -294,9 +294,36 @@ paths:
         "204":
           description: No content
         "404":
-            description: Salle non trouvé
+          description: Salle non trouvé
       security:
         - firebase: []
+
+  /rooms/{id}/bookings:
+    get:
+      tags:
+        - Rooms
+      summary: Bookings sur une salle
+      description: Renvoie les bookings sur une salle avec l'ID spécifié.
+      parameters:
+        - name: id
+          in: path
+          description: ID de la salle
+          required: true
+          schema:
+            type: integer
+      security:
+        - firebase: []
+      responses:
+        "200":
+          description: Succès, renvoie une liste de bookings pour la salle spécifiée
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Booking"
+        "404":
+          description: La salle spécifiée n'existe pas.
 
   /bookings:
     get:
