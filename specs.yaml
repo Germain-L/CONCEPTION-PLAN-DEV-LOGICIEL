@@ -1,8 +1,10 @@
 openapi: 3.0.0
+
 info:
   title: Application de réservation de salles
   description: API pour la réservation de salles au sein d'une entreprise
   version: 1.0.0
+
 servers:
   - url: https://api.example.com/v1
 
