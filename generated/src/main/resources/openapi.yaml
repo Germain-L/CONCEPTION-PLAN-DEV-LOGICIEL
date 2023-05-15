@@ -1,0 +1,618 @@
+openapi: 3.0.0
+info:
+  description: API pour la réservation de salles au sein d'une entreprise
+  title: Application de réservation de salles
+  version: 1.0.0
+servers:
+- url: https://api.example.com/v1
+tags:
+- description: Tout sur les utilisateurs
+  name: Users
+- description: Tout sur les salles
+  name: Rooms
+- description: Tout sur les réservations
+  name: Bookings
+paths:
+  /users:
+    get:
+      description: Renvoie une liste des utilisateurs
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/User'
+                type: array
+          description: OK
+      security:
+      - firebase: []
+      summary: Liste des utilisateurs
+      tags:
+      - Users
+    post:
+      description: Crée un nouvel utilisateur
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Created
+      security:
+      - firebase: []
+      summary: Créer un nouvel utilisateur
+      tags:
+      - Users
+  /users/{id}:
+    delete:
+      description: Supprime un utilisateur existant
+      parameters:
+      - description: Identifiant de l'utilisateur à supprimer
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Utilisateur non trouvé
+      security:
+      - firebase: []
+      summary: Supprimer un utilisateur
+      tags:
+      - Users
+    get:
+      description: Récupère un utilisateur à partir de son identifiant
+      parameters:
+      - description: Identifiant de l'utilisateur à récupérer
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: OK
+        "404":
+          description: Utilisateur non trouvé
+      security:
+      - firebase: []
+      summary: Récupérer un utilisateur par ID
+      tags:
+      - Users
+    put:
+      description: Met à jour les informations d'un utilisateur
+      parameters:
+      - description: Identifiant de l'utilisateur à mettre à jour
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: OK
+        "404":
+          description: Utilisateur non trouvé
+      security:
+      - firebase: []
+      summary: Mettre à jour un utilisateur
+      tags:
+      - Users
+  /rooms:
+    get:
+      description: Renvoie une liste des salles disponibles pour la réservation
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/_rooms_get_200_response_inner'
+                type: array
+          description: OK
+      security:
+      - firebase: []
+      summary: Liste des salles disponibles
+      tags:
+      - Rooms
+    post:
+      description: Crée une nouvelle salle pour la réservation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_rooms_post_request'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_rooms_post_201_response'
+          description: Created
+      security:
+      - firebase: []
+      summary: Créer une nouvelle salle
+      tags:
+      - Rooms
+  /rooms/{id}:
+    delete:
+      description: Supprime une salle spécifique en fonction de son identifiant.
+      parameters:
+      - description: Identifiant de la salle
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Salle non trouvé
+      security:
+      - firebase: []
+      summary: Supprimer une salle
+      tags:
+      - Rooms
+    get:
+      description: Récupère les informations d'une salle spécifique en fonction de
+        son identifiant.
+      parameters:
+      - description: Identifiant de la salle
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_rooms_get_200_response_inner'
+          description: OK
+        "404":
+          description: Salle non trouvé
+      security:
+      - firebase: []
+      summary: Récupérer les informations d'une salle
+      tags:
+      - Rooms
+    put:
+      description: Met à jour les informations d'une salle spécifique en fonction
+        de son identifiant.
+      parameters:
+      - description: Identifiant de la salle
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_rooms_post_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_rooms__id__put_200_response'
+          description: OK
+        "404":
+          description: Salle non trouvé
+      security:
+      - firebase: []
+      summary: Mettre à jour les informations d'une salle
+      tags:
+      - Rooms
+  /rooms/{id}/bookings:
+    get:
+      description: Renvoie les bookings sur une salle avec l'ID spécifié.
+      parameters:
+      - description: ID de la salle
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Booking'
+                type: array
+          description: "Succès, renvoie une liste de bookings pour la salle spécifié\
+            e"
+        "404":
+          description: La salle spécifiée n'existe pas.
+      security:
+      - firebase: []
+      summary: Bookings sur une salle
+      tags:
+      - Rooms
+  /bookings:
+    get:
+      description: Renvoie une liste des réservations de salles
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/_bookings_get_200_response_inner'
+                type: array
+          description: OK
+      security:
+      - firebase: []
+      summary: Liste des réservations
+      tags:
+      - Bookings
+    post:
+      description: Crée une nouvelle réservation pour une salle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_bookings_post_request'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_bookings_post_201_response'
+          description: Created
+      security:
+      - firebase: []
+      summary: Créer une nouvelle réservation
+      tags:
+      - Bookings
+  /bookings/{id}:
+    delete:
+      description: Supprime une réservation existante pour une salle
+      parameters:
+      - description: Identifiant de la réservation à supprimer
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Réservation non trouvée
+      security:
+      - firebase: []
+      summary: Supprimer une réservation existante
+      tags:
+      - Bookings
+    get:
+      description: Récupère les détails d'une réservation spécifique
+      parameters:
+      - description: Identifiant de la réservation à récupérer
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_bookings_get_200_response_inner'
+          description: OK
+        "404":
+          description: Réservation non trouvée
+      security:
+      - firebase: []
+      summary: Obtenez une réservation spécifique
+      tags:
+      - Bookings
+    put:
+      description: Modifie une réservation existante pour une salle
+      parameters:
+      - description: Identifiant de la réservation à modifier
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_bookings_post_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_bookings__id__put_200_response'
+          description: OK
+        "404":
+          description: Réservation non trouvée
+      security:
+      - firebase: []
+      summary: Modifier une réservation existante
+      tags:
+      - Bookings
+components:
+  schemas:
+    User:
+      example:
+        name: name
+        id: 0
+        email: email
+      properties:
+        id:
+          description: Identifiant unique de l'utilisateur
+          type: integer
+        name:
+          description: Nom de l'utilisateur
+          type: string
+        email:
+          description: Adresse e-mail de l'utilisateur
+          format: email
+          type: string
+      required:
+      - email
+      - name
+      type: object
+    Room:
+      properties:
+        id:
+          description: Identifiant unique de la salle
+          type: integer
+        name:
+          description: Nom de la salle
+          type: string
+        capacity:
+          description: Nombre maximum de personnes pouvant occuper la salle
+          type: integer
+      required:
+      - capacity
+      - name
+      type: object
+    Booking:
+      example:
+        start: 2000-01-23T04:56:07.000+00:00
+        end: 2000-01-23T04:56:07.000+00:00
+        id: 0
+        userId: 1
+        roomId: 6
+      properties:
+        id:
+          description: Identifiant unique de la réservation
+          type: integer
+        roomId:
+          description: Identifiant unique de la salle réservée
+          type: integer
+        start:
+          description: Date et heure de début de la réservation
+          format: date-time
+          type: string
+        end:
+          description: Date et heure de fin de la réservation
+          format: date-time
+          type: string
+        userId:
+          description: Identifiant unique de l'utilisateur qui a effectué la réservation
+          type: integer
+      required:
+      - end
+      - roomId
+      - start
+      - userId
+      type: object
+    _rooms_get_200_response_inner:
+      example:
+        name: name
+        id: 0
+        capacity: 6
+      properties:
+        id:
+          description: Identifiant de la salle
+          type: integer
+        name:
+          description: Nom de la salle
+          type: string
+        capacity:
+          description: Capacité de la salle
+          type: integer
+      type: object
+    _rooms_post_request:
+      properties:
+        name:
+          description: Nom de la salle
+          type: string
+        capacity:
+          description: Capacité de la salle
+          type: integer
+      type: object
+    _rooms_post_201_response:
+      example:
+        name: name
+        id: 0
+        capacity: 6
+      properties:
+        id:
+          description: Identifiant de la nouvelle salle
+          type: integer
+        name:
+          description: Nom de la nouvelle salle
+          type: string
+        capacity:
+          description: Capacité de la nouvelle salle
+          type: integer
+      type: object
+    _rooms__id__put_200_response:
+      example:
+        name: name
+        id: 0
+        capacity: 6
+      properties:
+        id:
+          description: Identifiant de la salle mise à jour
+          type: integer
+        name:
+          description: Nom de la salle mise à jour
+          type: string
+        capacity:
+          description: Capacité de la salle mise à jour
+          type: integer
+      type: object
+    _bookings_get_200_response_inner:
+      example:
+        start: 2000-01-23T04:56:07.000+00:00
+        end: 2000-01-23T04:56:07.000+00:00
+        id: 0
+        userId: 1
+        roomId: 6
+      properties:
+        id:
+          description: Identifiant de la réservation
+          type: integer
+        roomId:
+          description: Identifiant de la salle réservée
+          type: integer
+        start:
+          description: Date et heure de début de la réservation
+          format: date-time
+          type: string
+        end:
+          description: Date et heure de fin de la réservation
+          format: date-time
+          type: string
+        userId:
+          description: Identifiant de l'utilisateur qui a effectué la réservation
+          type: integer
+      type: object
+    _bookings_post_request:
+      properties:
+        roomId:
+          description: Identifiant de la salle réservée
+          type: integer
+        start:
+          description: Date et heure de début de la réservation
+          format: date-time
+          type: string
+        end:
+          description: Date et heure de fin de la réservation
+          format: date-time
+          type: string
+      type: object
+    _bookings_post_201_response:
+      example:
+        start: 2000-01-23T04:56:07.000+00:00
+        end: 2000-01-23T04:56:07.000+00:00
+        id: 0
+        userId: 1
+        roomId: 6
+      properties:
+        id:
+          description: Identifiant de la nouvelle réservation
+          type: integer
+        roomId:
+          description: Identifiant de la salle réservée
+          type: integer
+        start:
+          description: Date et heure de début de la réservation
+          format: date-time
+          type: string
+        end:
+          description: Date et heure de fin de la réservation
+          format: date-time
+          type: string
+        userId:
+          description: Identifiant de l'utilisateur qui a effectué la réservation
+          type: integer
+      type: object
+    _bookings__id__put_200_response:
+      example:
+        start: 2000-01-23T04:56:07.000+00:00
+        end: 2000-01-23T04:56:07.000+00:00
+        id: 0
+        userId: 1
+        roomId: 6
+      properties:
+        id:
+          description: Identifiant de la réservation modifiée
+          type: integer
+        roomId:
+          description: Identifiant de la salle réservée
+          type: integer
+        start:
+          description: Date et heure de début de la réservation
+          format: date-time
+          type: string
+        end:
+          description: Date et heure de fin de la réservation
+          format: date-time
+          type: string
+        userId:
+          description: Identifiant de l'utilisateur qui a effectué la réservation
+          type: integer
+      type: object
+  securitySchemes:
+    firebase:
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.google.com/o/oauth2/auth
+          scopes:
+            https://www.googleapis.com/auth/userinfo.email: Accès à l'adresse e-mail
+              de l'utilisateur
+          tokenUrl: https://oauth2.googleapis.com/token
+      type: oauth2
